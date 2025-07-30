@@ -7,6 +7,8 @@ import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { Authenticated, Unauthenticated } from "convex/react";
+import { BarLoader } from "react-spinners";
 
 export default function Header() {
   const path = usePathname();
@@ -53,8 +55,43 @@ export default function Header() {
             </Link>
           </div>
         )}
+        {/* Auth Actions */}
+        <div className="flex items-center gap-3 ml-10 md:ml-20">
+          <Authenticated>
+            <Link href="/dashboard">
+              <Button variant="glass" className="hidden sm:flex">
+                <LayoutDashboard className="h-4 w-4" />
+                <span className="hidden md:flex">Dashboard</span>
+              </Button>
+            </Link>
 
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "w-8 h-8 rounded-lg border border-white/20",
+                  userButtonPopoverCard:
+                    "shadow-xl backdrop-blur-md bg-slate-900/90 border border-white/20",
+                  userPreviewMainIdentifier: "font-semibold text-white",
+                },
+              }}
+              afterSignOutUrl="/"
+            />
+          </Authenticated>
+
+          <Unauthenticated>
+            <SignInButton>
+              <Button variant="glass" className="hidden sm:flex">
+                Sign In
+              </Button>
+            </SignInButton>
+
+            <SignUpButton>
+              <Button variant="primary">Get Started</Button>
+            </SignUpButton>
+          </Unauthenticated>
+        </div>
       </div>
+
     </header>
   );
 }

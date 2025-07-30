@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import { FloatingShapes } from "@/components/floating-shapes";
 import { Toaster } from "sonner";
+import { ConvexClientProvider } from "@/providers/convex-client-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/logo-text.png" sizes="any" />
       </head>
@@ -48,13 +49,15 @@ export default function RootLayout({
               baseTheme: shadesOfPurple,
             }}
           >
-            <Header />
+            <ConvexClientProvider>
+              <Header />
               <main className="bg-slate-900 min-h-screen text-white overflow-x-hidden">
                 <FloatingShapes />
                 <Toaster richColors />
 
                 {children}
               </main>
+            </ConvexClientProvider>
           </ClerkProvider>
         </ThemeProvider>
       </body>
